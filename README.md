@@ -5,7 +5,7 @@ Utilities for calling C++ from Julia
 # Overview
 
 [Julia][Julia] can call C code with no overhead, but it does not natively
-support C++. However, the C++ ABI is essentially "C plus some extra
+support C++. However, the C++ [ABI][ABIdef] is essentially "C plus some extra
 conventions," of which the most noteworthy is [name mangling][mangle]. Name
 mangling is used to support function overloading, a key C++ (and Julia) feature.
 Infamously, different compilers use different mangling conventions, and this has
@@ -62,4 +62,5 @@ The latter three may not be difficult to [fix][ABI].
 
 [Julia]: http://julialang.org "Julia"
 [mangle]: http://en.wikipedia.org/wiki/Name_mangling "name mangling"
+[ABIdef]: http://en.wikipedia.org/wiki/Application_binary_interface "application binary interface"
 [ABI]: http://www.agner.org/optimize/calling_conventions.pdf "C++ ABI"
