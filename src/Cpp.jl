@@ -2,6 +2,9 @@ module Cpp
 
 export @cpp
 
+# A useful reference:
+# http://www.agner.org/optimize/calling_conventions.pdf
+
 # Allow calling of functions in C++ shared libraries.
 # Usage: a = @cpp ccall((:mysymbol,mylib),...)
 macro cpp(ex)
@@ -15,29 +18,31 @@ macro cpp(ex)
     if !isa(ex,Expr) || ex.head != :ccall
         error(msg)
     end
+
     # Parse the library symbol's name
-    extmp = ex.args[1]
-    sym = extmp.args[1]
-    if !(isa(extmp,Expr) && extmp.head == :tuple)
+    exlib = ex.args[1]
+    if !(isa(exlib,Expr) && exlib.head == :tuple)
         error(msg)
     end
+    sym = exlib.args[1]
     fstr = string(sym)
     fstr = fstr[4:end-1]   # strip the :
     #GNU3-4 ABI
     fstr = string("_Z",length(fstr),fstr)
+
     # Parse the arguments to ccall and construct the parameter type string
-    extmp = ex.args[3]
-    if extmp.head != :tuple
+    exargtypes = ex.args[3]
+    if exargtypes.head != :tuple
         error(msg)
     end
-    exargs = extmp.args
+    exargs = exargtypes.args
     pstr = ""
-    symtable = (:Void,:Bool,:Cchar,:Char,:ASCIIString,:Int,:Int8,:Uint8,:Int16,:Uint16,:Int32,:Uint32,:Int64,:Uint64,:Float32,:Float64)
+    symtable = (:Void,:Bool,:Cchar,:Char,:ASCIIString,:Int,:Int8,:Uint8,:Int16,:Uint16,:Int32,:Cint,:Uint32,:Int64,:Uint64,:Float32,:Float64)
     # GNU3-4 ABI v.3 and v.4
-    ptable = ('v','b','c','w',"Pc",'i','a','h','s','t','i','j','l','m','f','d')
+    ptable =   ('v',  'b',  'c',   'w',  "Pc",        'i', 'a',  'h',   's',   't',    'i',   'i',  'j',    'l',   'm',    'f',     'd')
     for iarg = 1:length(exargs)
         thisarg = exargs[iarg]
-        if isa(thisarg,Expr) && thisarg.head == :curly && thisarg.args[1] == :Ptr
+        while isa(thisarg,Expr) && thisarg.head == :curly && thisarg.args[1] == :Ptr
             pstr = string(pstr,'P')
             thisarg = thisarg.args[2]
         end
@@ -56,7 +61,7 @@ macro cpp(ex)
         end
         if !matched
             println(thisarg)
-            error("Argument not recognized")
+            error("@cpp: argument not recognized")
         end
     end
     ex.args[1].args[1] = Expr(:quote, symbol(string(fstr,pstr)))
