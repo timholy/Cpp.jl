@@ -2,6 +2,8 @@
 
 Utilities for calling C++ from Julia
 
+See also the much more powerful [Clang](https://github.com/ihnorton/Clang.jl).
+
 # Overview
 
 [Julia][Julia] can call C code with no overhead, but it does not natively
