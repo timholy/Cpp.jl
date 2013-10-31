@@ -26,5 +26,9 @@ x = 3.5
 x2 = @cpp ccall((:timestwo, libdemo), Float64, (Float64,), x)
 @assert x2 == 2x
 y = 3
-y2 = @cpp ccall((:timestwo, libdemo), Int, (Int,), y)
+y2 = @cpp ccall((:timestwo, libdemo), Cint, (Cint,), y)
 @assert 2y == y2
+
+# Test substitution mangling
+val = @cpp ccall((:testsub, libdemo), Cint, (Ptr{Cint}, Ptr{Float64}, Ptr{Float64}), [int32(5)], [7.8], [-1.4])
+@assert val == 1
