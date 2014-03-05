@@ -29,7 +29,6 @@ macro cpp(ex)
     end
     sym = exlib.args[1]
     fstr = string(sym)
-    fstr = fstr[4:end-1]   # strip the :
     #GNU3-4 ABI
     fstr = string("_Z",length(fstr),fstr)
 
