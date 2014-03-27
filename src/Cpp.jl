@@ -28,7 +28,7 @@ macro cpp(ex)
         error(msg)
     end
     sym = exlib.args[1]
-    fstr = string(sym)
+    fstr = string(eval(sym))
     #GNU3-4 ABI
     fstr = string("_Z",length(fstr),fstr)
 
