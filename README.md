@@ -2,7 +2,7 @@
 
 Simple utilities for calling C++ from Julia
 
-See also [Clang](https://github.com/ihnorton/Clang.jl) and [CXX](https://github.com/Keno/Cxx.jl).
+See also [Clang](https://github.com/ihnorton/Clang.jl) and [Cxx](https://github.com/Keno/Cxx.jl).
 The latter is expected to be the long-term solution for calling C++.
 
 # Overview
