@@ -6,7 +6,7 @@ export @cpp
 # http://www.agner.org/optimize/calling_conventions.pdf
 # http://mentorembedded.github.io/cxx-abi/abi.html#mangling
 
-const SUBSTITUTION = ["", map(string, [0:9]), map(string, ['A':'Z'])]  # FIXME more than 37 arguments?
+const SUBSTITUTION = [""; map(string, collect(0:9)); map(string, collect('A':'Z'))]  # FIXME more than 37 arguments?
 
 # Allow calling of functions in C++ shared libraries.
 # Usage: a = @cpp ccall((:mysymbol,mylib),...)
